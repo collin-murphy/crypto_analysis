@@ -8,6 +8,7 @@ import json
 
 URL = "https://coinmarketcap.com/"
 
+#getCurrencies() - find all top 100 cryptos on front page of coinmarketcat.com
 def getCurrencies(URL):
     #open link
     r2 = rq.get(URL)
@@ -18,7 +19,7 @@ def getCurrencies(URL):
             currencies.append(a)
     return currencies
 
-        
+#assembleCurrencies() - create a working link for each cryptocurrency
 def assembleCurrencies(currencies):
     #complete every link that isn't full
     for c in currencies:
@@ -49,6 +50,7 @@ def assembleCurrencies(currencies):
 
     return noRepeats
 
+#getData() - retrieve information from each link and store them in a tuple with a name and a price
 def getData(currencies):
     prices = []
     for c in currencies:
@@ -64,14 +66,15 @@ def getData(currencies):
     print("Processing complete.")
     return prices
 
+#sort() - put the cryptocurrencies in a pandas dataframe
 def sort(prices):
     rows = []
     for n in prices:
         rows.append([n[0], (float(n[1]))])
     data = pd.DataFrame(rows, columns = ["Name", "Price"])
-    print("\nDatabase has been updated.\n")
     return data
 
+#topx() - Print the top x crytpocurrencies by value
 def topx(data,x):
     data = data.sort_values(by=["Price"] ,ascending = False)
     print("Top " + str(x) +" Cryptocurrencies by price:")
@@ -110,18 +113,26 @@ def main():
         prices = getData(currencies)
         writeData(prices)
         prices = sort(prices)
+        print("\nDatabase has been updated.\n")
     else:
         prices = readData()
         prices = sort(prices)
-
-    while choice != "t":
-        choice = input("Press t to read top 10 Cryptocurrencies: ")
-    
-    topx(prices,10)
-
+        print("\nData loaded from prices.json successfully.\n")
 
     
+    isValid = False
+    while isValid == False:
+        value = input("Enter number of currencies to show: ")
+        if not value.isnumeric():
+            print("Number must be numerical")
+            isValid = False
+        elif int(value) > 100:
+            print("Number must be less than 100")
+            isValid = False
+        else: isValid = True
 
+    topx(prices,int(value))
+    print("\nInformation provided by coinmarketcap.com")
 
 if __name__ == "__main__":
     main()
