@@ -3,7 +3,7 @@
 
 This program is a python script that reads the top cryptocurrencies from coinmarketcap.com, sorts them, and saves them in a file to be read in the program later.
 
-[Software Demo Video](https://www.youtube.com/watch?v=uUuzFvwNiyA&feature=youtu.be)
+[Software Demo Video](https://www.youtube.com/watch?v=WtDU2JaVA-w&feature=youtu.be)
 
 # Data Analysis Results
 
